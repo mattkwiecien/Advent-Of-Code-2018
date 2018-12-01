@@ -1,0 +1,5 @@
+.gitignore
+.resx
+bin/*
+obj/*
+.vs/*
