@@ -6,13 +6,13 @@ using System.Text;
 
 namespace AdventOfCode {
 
-    public abstract class AdventOfCodeSolver {
+    public abstract class SolverBase : ISolver {
 
         private string mySession = PrivateData.MySession;
 
         private string dataUrl;
 
-        public AdventOfCodeSolver(string dUrl) {
+        public SolverBase(string dUrl) {
             dataUrl = dUrl;
         }
 

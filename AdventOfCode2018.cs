@@ -17,15 +17,12 @@ namespace AdventOfCode {
         }
 
         public static void Solve(short day) {
-            
-            do {
-                var AOCSolver = AOCSolverFactory.Create(day);
-                Console.WriteLine($"The Advent of Code answer to day {day} part 1 is: {AOCSolver.SolvePartOne()}");
-                Console.WriteLine($"The Advent of Code answer to day {day} part 2 is: {AOCSolver.SolvePartTwo()}");
-                Console.Write("Press ENTER to exit.");
-                Console.ReadLine();
-                break;
-            } while (true);
+
+            var Solver = SolverFactory.Create(day);
+            Console.WriteLine($"The Advent of Code answer to day {day} part 1 is: {Solver.SolvePartOne()}");
+            Console.WriteLine($"The Advent of Code answer to day {day} part 2 is: {Solver.SolvePartTwo()}");
+            Console.Write("Press ENTER to exit.");
+            Console.ReadLine();
 
         }
     }

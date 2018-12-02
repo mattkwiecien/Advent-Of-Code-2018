@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace AdventOfCode {
-    public static class AOCSolverFactory {
-        public static AdventOfCodeSolver Create(short day) {
+    public static class SolverFactory {
+        public static ISolver Create(short day) {
             switch (day) {
                 case 1:
                     return new DayOneSolver();
