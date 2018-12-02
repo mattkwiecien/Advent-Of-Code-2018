@@ -1,6 +1,0 @@
-.gitignore
-.resx
-bin/*
-obj/*
-.vs/*
-PrivateData.*
