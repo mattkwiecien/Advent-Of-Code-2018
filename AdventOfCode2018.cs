@@ -1,16 +1,32 @@
 ﻿using System;
 
 namespace AdventOfCode {
-    class AdventOfCode2018 {
-        static void Main(string[] args) {
-            Console.WriteLine("Press any key to continue: ");
-            Console.ReadKey();
+    public class AdventOfCode2018 {
+        public static void Main(string[] args) {
 
-            var AOCSolver = AOCSolverFactory.Create(1);
-            Console.WriteLine($"The answer to day one, part 1 is: {AOCSolver.SolvePartOne()}");
-            Console.WriteLine($"The answer to day one, part 2 is: {AOCSolver.SolvePartTwo()}");
+            Console.WriteLine("Enter an Advent of Code day to solve (1-25): ");
+            do {
+                if (short.TryParse(Console.ReadKey(true).KeyChar.ToString(), out short day) && day > 0 && day < 26) {
+                    Solve(day);
+                    break;
+                } else {
+                    Console.WriteLine("Invalid input, please enter a number between 1 and 25: ");
+                }
+            } while (true);
 
-            Console.ReadKey();
+        }
+
+        public static void Solve(short day) {
+            
+            do {
+                var AOCSolver = AOCSolverFactory.Create(day);
+                Console.WriteLine($"The Advent of Code answer to day {day} part 1 is: {AOCSolver.SolvePartOne()}");
+                Console.WriteLine($"The Advent of Code answer to day {day} part 2 is: {AOCSolver.SolvePartTwo()}");
+                Console.Write("Press ENTER to exit.");
+                Console.ReadLine();
+                break;
+            } while (true);
+
         }
     }
 }

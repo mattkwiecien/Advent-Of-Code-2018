@@ -8,6 +8,8 @@ namespace AdventOfCode {
             switch (day) {
                 case 1:
                     return new DayOneSolver();
+                case 2:
+                    return new DayTwoSolver();
             }
             return null;
         }
