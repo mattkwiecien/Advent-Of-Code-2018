@@ -5,11 +5,9 @@ using System.Text;
 namespace AdventOfCode {
     public class DayOneSolver : SolverBase {
 
-        private string _myData;
         private List<int> _myFrequencies = new List<int>();
 
         public DayOneSolver() : base(@"https://adventofcode.com/2018/day/1/input") {
-            _myData = GetData();
             GetFrequencies();
         }
 

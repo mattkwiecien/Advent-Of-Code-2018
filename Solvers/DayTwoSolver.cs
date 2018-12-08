@@ -5,11 +5,9 @@ using System.Text;
 namespace AdventOfCode {
     public class DayTwoSolver : SolverBase {
 
-        private string _myData;
         private List<string> _idList = new List<string>();
 
         public DayTwoSolver() : base(@"https://adventofcode.com/2018/day/2/input") {
-            _myData = GetData();
             _idList = new List<string>(_myData.Split("\n"));
         }
 

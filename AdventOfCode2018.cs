@@ -2,6 +2,7 @@
 
 namespace AdventOfCode {
     public class AdventOfCode2018 {
+
         public static void Main(string[] args) {
 
             Console.WriteLine("Enter an Advent of Code day to solve (1-25): ");

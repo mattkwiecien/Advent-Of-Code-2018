@@ -10,6 +10,8 @@ namespace AdventOfCode {
                     return new DayOneSolver();
                 case 2:
                     return new DayTwoSolver();
+                case 3:
+                    return new DayThreeSolver();
             }
             return null;
         }

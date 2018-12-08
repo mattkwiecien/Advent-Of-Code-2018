@@ -9,11 +9,11 @@ namespace AdventOfCode {
     public abstract class SolverBase : ISolver {
 
         private string mySession = PrivateData.MySession;
-
-        private string dataUrl;
+        
+        protected string _myData;
 
         public SolverBase(string dUrl) {
-            dataUrl = dUrl;
+            _myData = GetData(dUrl);
         }
 
         public string SolvePartOne() {
@@ -24,7 +24,7 @@ namespace AdventOfCode {
             return PartTwoSolver();
         }
 
-        protected string GetData() {
+        protected string GetData(string dataUrl) {
             var req = WebRequest.Create(dataUrl);
             req.Method = "GET";
             req.Headers.Add($"cookie: session={mySession}");

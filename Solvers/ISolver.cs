@@ -7,6 +7,7 @@ namespace AdventOfCode {
     public interface ISolver {
 
         string SolvePartOne();
+
         string SolvePartTwo();
 
     }
