@@ -7,7 +7,7 @@ namespace AdventOfCode {
 
         private List<string> _idList = new List<string>();
 
-        public DayTwoSolver() : base(@"https://adventofcode.com/2018/day/2/input") {
+        public DayTwoSolver(bool local) : base(2, local) {
             _idList = new List<string>(_myData.Split("\n"));
         }
 

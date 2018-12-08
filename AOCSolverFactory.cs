@@ -4,14 +4,14 @@ using System.Text;
 
 namespace AdventOfCode {
     public static class SolverFactory {
-        public static ISolver Create(short day) {
+        public static ISolver Create(short day, bool local) {
             switch (day) {
                 case 1:
-                    return new DayOneSolver();
+                    return new DayOneSolver(local);
                 case 2:
-                    return new DayTwoSolver();
+                    return new DayTwoSolver(local);
                 case 3:
-                    return new DayThreeSolver();
+                    return new DayThreeSolver(local);
             }
             return null;
         }

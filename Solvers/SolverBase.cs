@@ -8,12 +8,15 @@ namespace AdventOfCode {
 
     public abstract class SolverBase : ISolver {
 
-        private string mySession = PrivateData.MySession;
-        
+        private string _mySession = "fake";
+
+		private string _dataUrl = @"https://adventofcode.com/2018/day/{0}/input";
+		private string _localFile = @"C:\Users\mkwiecien\Source\Repos\Advent-Of-Code-2018\LocalInput\day{0}.txt";
+
         protected string _myData;
 
-        public SolverBase(string dUrl) {
-            _myData = GetData(dUrl);
+        public SolverBase(short solveDay, bool local) {
+            _myData = GetData(solveDay, local);
         }
 
         public string SolvePartOne() {
@@ -24,20 +27,31 @@ namespace AdventOfCode {
             return PartTwoSolver();
         }
 
-        protected string GetData(string dataUrl) {
-            var req = WebRequest.Create(dataUrl);
-            req.Method = "GET";
-            req.Headers.Add($"cookie: session={mySession}");
-            var resp = req.GetResponse();
-
-            string content;
-            using (var ms = resp.GetResponseStream()) {
-                using (var reader = new StreamReader(ms)) {
-                    content = reader.ReadToEnd();
-                }
-            }
-            return content;
+        protected string GetData(short solveDay, bool local) {
+			return local ? LoadFromFile(solveDay) : LoadFromWeb(solveDay);
         }
+
+		private string LoadFromFile(short solveDay) {
+			var fileLocation = string.Format(_localFile, solveDay);
+			return File.ReadAllText(fileLocation);
+		}
+
+		private string LoadFromWeb(short solveDay) {
+			var dataUrl = string.Format(_dataUrl, solveDay);
+			var req = WebRequest.Create(dataUrl);
+			req.Method = "GET";
+			req.Headers.Add($"cookie: session={_mySession}");
+			var resp = req.GetResponse();
+
+			string content;
+			using (var ms = resp.GetResponseStream()) {
+				using (var reader = new StreamReader(ms)) {
+					content = reader.ReadToEnd();
+				}
+			}
+			return content;
+		}
+
 
         protected abstract string PartOneSolver();
         protected abstract string PartTwoSolver();

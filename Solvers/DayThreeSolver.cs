@@ -7,14 +7,14 @@ namespace AdventOfCode {
 
         private List<Sheet> _mySheets = new List<Sheet>();
 
-        public DayThreeSolver() : base(@"https://adventofcode.com/2018/day/3/input") {
+        public DayThreeSolver(bool local) : base(3, local) {
             GetSheets();
         }
 
         protected override string PartOneSolver() {
             var fabric = new short[100, 100];
             foreach(var sheet in _mySheets) {
-                sheet.AddToFabric(ref fabric);
+                //sheet.AddToFabric(ref fabric);
             }
             for(var i=0; i<100; i++) {
                 for(var j=0; j < 100; j++) {
@@ -72,7 +72,7 @@ namespace AdventOfCode {
                         } else if (fabric[x,y] != "0" || fabric[x, y] != Id.ToString()) {
                             fabric[x, y] = "X";
                         } else {
-                            fabric[x, y] = Id;
+                           // fabric[x, y] = Id;
                         }
                     }
                 }

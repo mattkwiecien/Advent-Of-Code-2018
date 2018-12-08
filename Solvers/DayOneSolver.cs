@@ -7,7 +7,7 @@ namespace AdventOfCode {
 
         private List<int> _myFrequencies = new List<int>();
 
-        public DayOneSolver() : base(@"https://adventofcode.com/2018/day/1/input") {
+        public DayOneSolver(bool local) : base(1, local) {
             GetFrequencies();
         }
 
