@@ -1,83 +1,87 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AdventOfCode {
-    public class DayThreeSolver : SolverBase {
+	public class DayThreeSolver : SolverBase {
 
-        private List<Sheet> _mySheets = new List<Sheet>();
+		private List<Sheet> _mySheets = new List<Sheet>();
 
-        public DayThreeSolver(bool local) : base(3, local) {
-            GetSheets();
-        }
+		public DayThreeSolver(bool local) : base(3, local) {
+			GetSheets();
+		}
 
-        protected override string PartOneSolver() {
-            var fabric = new short[100, 100];
-            foreach(var sheet in _mySheets) {
-                //sheet.AddToFabric(ref fabric);
-            }
-            for(var i=0; i<100; i++) {
-                for(var j=0; j < 100; j++) {
-                    Console.Write(fabric[i, j]);
-                }
-                Console.Write("\n");
-            }
-            return "";
-        }
+		protected override string PartOneSolver() {
+			var nestedSheets = new List<Sheet>();
 
-        protected override string PartTwoSolver() {
-            return "";
-        }
+			foreach (var sheet in _mySheets) {
+				var innerSheets = _mySheets.FindAll(x => sheet.ContainsOther(x));
+				if (innerSheets == null || innerSheets.Count == 0) { continue; }
+				nestedSheets.AddRange(innerSheets);
+			}
 
-        private void GetSheets() {
-            var sheets = _myData.Split("\n");
+			return nestedSheets.Max(x => x.Area).ToString();
+		}
 
-            foreach (var sheet in sheets) {
-                var sheetParts = sheet.Split(" ");
-                if (string.IsNullOrWhiteSpace(sheetParts[0])) { continue; }
-                if (!short.TryParse(sheetParts[0].Replace("#", "").Trim(), out short id)) { continue; }
+		protected override string PartTwoSolver() {
+			return "";
+		}
 
-                var locationParts = sheetParts[2].TrimEnd(':').Split(",");
-                var sizeParts = sheetParts[3].Split("x");
+		private void GetSheets() {
+			var sheets = _myData.Split("\n");
 
-                if (!short.TryParse(locationParts[0], out short xCoord)) { continue; }
-                if (!short.TryParse(locationParts[1], out short yCoord)) { continue; }
+			foreach (var sheetData in sheets) {
+				var newSheet = Sheet.FromString(sheetData);
+				if (newSheet == null) { continue; }
+				_mySheets.Add(newSheet);
+			}
+		}
 
-                if (!short.TryParse(sizeParts[0], out short width)) { continue; }
-                if (!short.TryParse(locationParts[1], out short height)) { continue; }
+		private partial class Sheet {
+			public static Sheet FromString(string sheetData) {
+				var sheetParts = sheetData.Split(" ");
+				if (string.IsNullOrWhiteSpace(sheetParts[0])) { return null; }
+				if (!short.TryParse(sheetParts[0].Replace("#", "").Trim(), out short id)) { return null; }
 
-                var mySheet = new Sheet(id, (xCoord, yCoord), (width, height));
-                _mySheets.Add(mySheet);
+				var locationParts = sheetParts[2].TrimEnd(':').Split(",");
+				var sizeParts = sheetParts[3].Split("x");
 
-            }
-        }
+				if (!short.TryParse(locationParts[0], out short xCoord)) { return null; }
+				if (!short.TryParse(locationParts[1], out short yCoord)) { return null; }
 
-        private class Sheet {
+				if (!short.TryParse(sizeParts[0], out short width)) { return null; }
+				if (!short.TryParse(locationParts[1], out short height)) { return null; }
 
-            public short Id { get; set; }
-            public (short, short) Location { get; set; }
-            public (short, short) Size { get; set; }
+				return new Sheet(id, (xCoord, yCoord), (width, height));
+			}
+		}
 
-            public Sheet(short id, (short, short) location, (short, short) size) {
-                Id = id;
-                Location = location;
-                Size = size;
-            }
+		private partial class Sheet {
 
-            public void AddToFabric(ref string[,] fabric) {
-               for (var x = 0; x < 100; x++) {
-                    for (var y = 0; y < 100; y++) {
-                        if (x < Location.Item1 || x > Location.Item1 + Size.Item1 || y < Location.Item2 || y > Location.Item2 + Size.Item2) {
-                            fabric[x, y] += 0;
-                        } else if (fabric[x,y] != "0" || fabric[x, y] != Id.ToString()) {
-                            fabric[x, y] = "X";
-                        } else {
-                           // fabric[x, y] = Id;
-                        }
-                    }
-                }
-            }
+			private (short, short) _location;
+			private (short, short) _size;
 
-        }
-    }
+			public short Id { get; set; }
+			public int Area => _size.Item1 * _size.Item2;
+			public (int, int) XCoords => (_location.Item1 - 1, _location.Item1 - 1 + _size.Item1);
+			public (int, int) YCoords => (_location.Item2 - 1, _location.Item2 - 1 + _size.Item2);
+
+			public Sheet(short id, (short, short) location, (short, short) size) {
+				_location = location;
+				_size = size;
+				Id = id;
+			}
+
+			public bool ContainsOther(Sheet other) {
+				return
+					other.Id != this.Id &&
+					other.XCoords.Item1 >= this.XCoords.Item1 &&
+					other.XCoords.Item2 <= this.XCoords.Item2 &&
+					other.YCoords.Item1 >= this.YCoords.Item1 &&
+					other.YCoords.Item2 <= this.YCoords.Item2;
+			}
+
+		}
+	}
 }
