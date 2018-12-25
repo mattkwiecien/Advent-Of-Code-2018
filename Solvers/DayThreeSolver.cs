@@ -7,25 +7,26 @@ namespace AdventOfCode {
 	public class DayThreeSolver : SolverBase {
 
 		private List<Sheet> _mySheets = new List<Sheet>();
+		private Dictionary<(int, int), int> _sheetPoints = new Dictionary<(int, int), int>();
 
 		public DayThreeSolver(bool local) : base(3, local) {
 			GetSheets();
+			MapAllSheetPoints();
 		}
 
 		protected override string PartOneSolver() {
-			var nestedSheets = new List<Sheet>();
-
-			foreach (var sheet in _mySheets) {
-				var innerSheets = _mySheets.FindAll(x => sheet.ContainsOther(x));
-				if (innerSheets == null || innerSheets.Count == 0) { continue; }
-				nestedSheets.AddRange(innerSheets);
-			}
-
-			return nestedSheets.Max(x => x.Area).ToString();
+			var moreThanOne = _sheetPoints.Count(x => x.Value == 0);
+			return moreThanOne.ToString();
 		}
 
 		protected override string PartTwoSolver() {
-			return "";
+			_mySheets.ForEach(x => x.FindOverlap(_sheetPoints));
+			var noOverlap = _mySheets.FirstOrDefault(x => !x.HasOverlap);
+			return noOverlap.Id.ToString();
+		}
+
+		private void MapAllSheetPoints() {
+			_mySheets.ForEach(x => x.PopulateMasterSheet(ref _sheetPoints));
 		}
 
 		private void GetSheets() {
@@ -51,7 +52,7 @@ namespace AdventOfCode {
 				if (!short.TryParse(locationParts[1], out short yCoord)) { return null; }
 
 				if (!short.TryParse(sizeParts[0], out short width)) { return null; }
-				if (!short.TryParse(locationParts[1], out short height)) { return null; }
+				if (!short.TryParse(sizeParts[1], out short height)) { return null; }
 
 				return new Sheet(id, (xCoord, yCoord), (width, height));
 			}
@@ -63,9 +64,9 @@ namespace AdventOfCode {
 			private (short, short) _size;
 
 			public short Id { get; set; }
-			public int Area => _size.Item1 * _size.Item2;
-			public (int, int) XCoords => (_location.Item1 - 1, _location.Item1 - 1 + _size.Item1);
-			public (int, int) YCoords => (_location.Item2 - 1, _location.Item2 - 1 + _size.Item2);
+			public (int, int) XCoords => (_location.Item1, _location.Item1 + _size.Item1);
+			public (int, int) YCoords => (_location.Item2, _location.Item2 + _size.Item2);
+			public bool HasOverlap { get; set; }
 
 			public Sheet(short id, (short, short) location, (short, short) size) {
 				_location = location;
@@ -73,13 +74,25 @@ namespace AdventOfCode {
 				Id = id;
 			}
 
-			public bool ContainsOther(Sheet other) {
-				return
-					other.Id != this.Id &&
-					other.XCoords.Item1 >= this.XCoords.Item1 &&
-					other.XCoords.Item2 <= this.XCoords.Item2 &&
-					other.YCoords.Item1 >= this.YCoords.Item1 &&
-					other.YCoords.Item2 <= this.YCoords.Item2;
+			public void PopulateMasterSheet(ref Dictionary<(int, int), int> allPoints) {
+				for (var x = this.XCoords.Item1; x < this.XCoords.Item2; x++) {
+					for (var y = this.YCoords.Item1; y < this.YCoords.Item2; y++) {
+						if (allPoints.ContainsKey((x, y))) {
+							allPoints[(x, y)] = 0;
+						} else {
+							allPoints.Add((x, y), this.Id);
+						}
+					}
+				}
+			}
+
+			public void FindOverlap(Dictionary<(int,int), int> allPoints) {
+				for (var x = this.XCoords.Item1; x < this.XCoords.Item2; x++) {
+					for (var y = this.YCoords.Item1; y < this.YCoords.Item2; y++) {
+						if (!allPoints.ContainsKey((x,y)) || allPoints[(x,y)] == this.Id) { continue;  }
+						this.HasOverlap = true;
+					}
+				}
 			}
 
 		}
