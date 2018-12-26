@@ -25,12 +25,12 @@ namespace AdventOfCode {
                 }
 
                 var existingRecord = _guards.FirstOrDefault(x => x.GuardId == gRecord.GuardID);
-                if(existingRecord != null) {
+                if (existingRecord != null) {
                     currentGuard = existingRecord;
                 } else {
                     currentGuard = new Guard(gRecord.GuardID);
                     _guards.Add(currentGuard);
-                }          
+                }
             }
         }
 
@@ -46,27 +46,30 @@ namespace AdventOfCode {
 
         protected override string PartOneSolver() {
             var sleeper = _guards.OrderByDescending(x => x.TotalMinutesSlept).FirstOrDefault();
-            return (sleeper.GuardId * sleeper.MinuteMostAsleep).ToString();
+            return (sleeper.GuardId * sleeper.MinuteMostAsleep.Key).ToString();
         }
 
         protected override string PartTwoSolver() {
-            return "";
+            var sleeper = _guards.OrderByDescending(x => x.MinuteMostAsleep.Value).FirstOrDefault();
+            return (sleeper.GuardId * sleeper.MinuteMostAsleep.Key).ToString();
         }
 
         private class Guard {
             public int GuardId { get; set; }
             public List<GuardRecord> SleepJournal { get; set; }
             public int TotalMinutesSlept => GetMinutesAsleep();
-            public int MinuteMostAsleep => GetMinuteMostAsleep();
+            public KeyValuePair<int, int> MinuteMostAsleep => GetMinuteMostAsleep();
 
             public Guard(int guardId) {
                 this.GuardId = guardId;
                 SleepJournal = new List<GuardRecord>();
+                GetMinutesAsleep();
+                GetMinuteMostAsleep();
             }
 
             private int GetMinutesAsleep() {
                 var cnt = 0;
-                if (SleepJournal.Count == 0) { return cnt; }
+                if (SleepJournal.Count == 0) { return 0; }
 
                 for (var i = 0; i < SleepJournal.Count; i = i + 2) {
                     var span = SleepJournal[i + 1].Dt - SleepJournal[i].Dt;
@@ -76,7 +79,7 @@ namespace AdventOfCode {
                 return cnt;
             }
 
-            private int GetMinuteMostAsleep() {
+            private KeyValuePair<int, int> GetMinuteMostAsleep() {
                 var minuteCount = new Dictionary<int, int>();
 
                 for (var j = 0; j < this.SleepJournal.Count; j = j + 2) {
@@ -90,29 +93,29 @@ namespace AdventOfCode {
                     }
                 }
 
-                return minuteCount.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+                return minuteCount.OrderByDescending(x => x.Value).FirstOrDefault();
             }
         }
 
-		private partial class GuardRecord {
-			public DateTime Dt { get; set; }
-			public string Desc { get; set; }
-			public bool IsShiftRecord => Desc.Contains('#');
-			public int GuardID => IsShiftRecord ? int.Parse(Desc.Split(" ")[1].Trim('#')) : 0;
-		}
+        private partial class GuardRecord {
+            public DateTime Dt { get; set; }
+            public string Desc { get; set; }
+            public bool IsShiftRecord => Desc.Contains('#');
+            public int GuardID => IsShiftRecord ? int.Parse(Desc.Split(" ")[1].Trim('#')) : 0;
+        }
 
-		private partial class GuardRecord {
-			public static GuardRecord FromRecord(string record) {
-				var gRecord = new GuardRecord();
-				//[1518-04-13 00:03] Guard #613 begins shift
-				var recParts = record.Split("]");
-				if (recParts.Length < 2) { return null; }
+        private partial class GuardRecord {
+            public static GuardRecord FromRecord(string record) {
+                var gRecord = new GuardRecord();
+                //[1518-04-13 00:03] Guard #613 begins shift
+                var recParts = record.Split("]");
+                if (recParts.Length < 2) { return null; }
 
-				gRecord.Desc = recParts[1].Trim(' ');
-				gRecord.Dt = DateTime.Parse(recParts[0].Trim('['));
-				return gRecord;
-			}
-		}
-	}
+                gRecord.Desc = recParts[1].Trim(' ');
+                gRecord.Dt = DateTime.Parse(recParts[0].Trim('['));
+                return gRecord;
+            }
+        }
+    }
 
 }
