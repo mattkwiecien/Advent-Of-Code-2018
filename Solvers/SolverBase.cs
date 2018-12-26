@@ -8,7 +8,7 @@ namespace AdventOfCode {
 
     public abstract class SolverBase : ISolver {
 
-        private string _mySession = "fake";
+        private string _mySession = Solvers.PrivateData.SessionToken;
 
 		private string _dataUrl = @"https://adventofcode.com/2018/day/{0}/input";
 		private string _localFile = @"C:\Users\mkwiecien\Source\Repos\Advent-Of-Code-2018\LocalInput\day{0}.txt";
