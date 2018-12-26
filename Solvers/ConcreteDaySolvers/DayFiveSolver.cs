@@ -13,8 +13,26 @@ namespace AdventOfCode {
         }
 
         protected override string PartOneSolver() {
+            return ReducePolymer(_polymerChain).Count.ToString();
+        }
+
+        protected override string PartTwoSolver() {
+            var shortestLength = _polymerChain.Length;
+            var alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+            foreach (var letter in alphabet) {
+                var newPolymer = _polymerChain.Replace(letter.ToString(), "");
+                newPolymer = newPolymer.Replace(letter.ToString().ToUpper(), "");
+                var result = ReducePolymer(newPolymer);
+                if (result.Count < shortestLength) { shortestLength = result.Count; }
+            }
+
+            return shortestLength.ToString();
+        }
+
+        private Stack<char> ReducePolymer(string polymer) {
             var myStack = new Stack<char>();
-            foreach (var unit in _polymerChain) {
+            foreach (var unit in polymer) {
                 myStack.TryPeek(out char lastUnit);
                 if (OppositePolarity(lastUnit, unit)) {
                     myStack.Pop();
@@ -22,7 +40,7 @@ namespace AdventOfCode {
                     myStack.Push(unit);
                 }
             }
-            return myStack.Count.ToString();
+            return myStack;
         }
 
         private bool OppositePolarity(char a, char b) {
@@ -32,10 +50,5 @@ namespace AdventOfCode {
             return true;
         }
 
-        protected override string PartTwoSolver() {
-            return "";
-        }
-
     }
-
 }
