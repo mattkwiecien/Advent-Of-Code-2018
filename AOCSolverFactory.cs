@@ -12,6 +12,8 @@ namespace AdventOfCode {
                     return new DayTwoSolver(local);
                 case 3:
                     return new DayThreeSolver(local);
+				case 4:
+					return new DayFourSolver(local);
             }
             return null;
         }
