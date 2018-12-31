@@ -61,7 +61,7 @@ namespace AdventOfCode.Solvers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to placeholder.
+        ///   Looks up a localized string similar to 53616c7465645f5fd39af29a65701354868b5fce67afcc6e7e348f82b8aba007ece24cc820cfb6f57f4733b2d5074811.
         /// </summary>
         internal static string SessionToken {
             get {
