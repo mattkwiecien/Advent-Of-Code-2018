@@ -27,7 +27,17 @@ namespace AdventOfCode {
         }
 
         protected override string PartTwoSolver() {
-            return "";
+
+            var totalSize = 0;
+            for (var x = 0; x < 1000; x++) {
+                for (var y = 0; y < 1000; y++) {
+                    var sumOfDistances = 0;
+                    vectors.ForEach(v => sumOfDistances += GetTaxicabDistance(v, (y, x)));
+                    if (sumOfDistances < 10000) { totalSize += 1; }
+                }
+            }
+            return totalSize.ToString();
+
         }
 
         private int GetTaxicabDistance((int, int) p, (int, int) q) {
