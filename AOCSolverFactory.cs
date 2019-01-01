@@ -19,7 +19,7 @@ namespace AdventOfCode {
                 case 6:
                     return new DaySixSolver(local);
                 case 7:
-                    throw new NotImplementedException();
+                    return new DaySevenSolver(local);
                 case 8:
                     throw new NotImplementedException();
                 case 9:
