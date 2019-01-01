@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AdventOfCode.Solvers {
+namespace AdventOfCode {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace AdventOfCode.Solvers {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AdventOfCode.Solvers.PrivateData", typeof(PrivateData).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AdventOfCode.PrivateData", typeof(PrivateData).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace AdventOfCode.Solvers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 53616c7465645f5fd39af29a65701354868b5fce67afcc6e7e348f82b8aba007ece24cc820cfb6f57f4733b2d5074811.
+        ///   Looks up a localized string similar to nope.
         /// </summary>
         internal static string SessionToken {
             get {

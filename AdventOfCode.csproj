@@ -24,19 +24,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>PrivateData.resx</DependentUpon>
     </Compile>
-    <Compile Update="Solvers\PrivateData.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PrivateData.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="PrivateData.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>PrivateData.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Solvers\PrivateData.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PrivateData.Designer.cs</LastGenOutput>
     </EmbeddedResource>
